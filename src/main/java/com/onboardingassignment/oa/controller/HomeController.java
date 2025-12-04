@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -29,17 +30,30 @@ public class HomeController {
     // --------------------------
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(@RequestParam(required = false) String error,
+                            @RequestParam(required = false) String logout,
+                            Model model) {
+
+        if (error != null) {
+            model.addAttribute("error", true);
+        }
+
+        if (logout != null) {
+            model.addAttribute("logout", true);
+        }
+
         return "login";
     }
 
     @GetMapping({"/", "/home"})
-    public String homePage() {
+    public String homePage(Model model, Authentication authentication) {
+        model.addAttribute("username", authentication.getName());
         return "home";
     }
 
     @GetMapping("/admin")
-    public String adminPage() {
+    public String adminPage(Model model, Authentication authentication) {
+        model.addAttribute("username", authentication.getName());
         return "admin";
     }
 
