@@ -1,0 +1,47 @@
+<h1>Product Details</h1>
+
+<a href="/">
+    <button>⬅ Return to Home</button>
+</a>
+
+<hr/>
+
+<div style="max-width: 400px;">
+
+    <h2>{{product.name}}</h2>
+
+    <label class="toggle-switch">
+        <input type="checkbox" id="favoriteToggle" checked = {{favourited}}>
+        <span class="slider round">Favourite</span>
+    </label>
+
+    <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th>Code</th>
+            <td>{{product.code}}</td>
+        </tr>
+        <tr>
+            <th>Language</th>
+            <td>{{product.language}}</td>
+        </tr>
+        <tr>
+            <th>Stock</th>
+            <td>{{product.stock}}</td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td>${{product.price}}</td>
+        </tr>
+    </table>
+
+</div>
+<script>
+    const favToggle = document.getElementById("favoriteToggle");
+
+    favToggle.addEventListener("change", function () {
+
+        const isChecked = favToggle.checked;
+
+        console.log("Toggled:", isChecked);
+    });
+</script>
