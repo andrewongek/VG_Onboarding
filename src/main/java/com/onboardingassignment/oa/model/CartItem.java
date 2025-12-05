@@ -1,6 +1,8 @@
 package com.onboardingassignment.oa.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "cart_items")
@@ -18,6 +20,7 @@ public class CartItem {
     // Each CartItem references a product
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
 
     private int quantity;
