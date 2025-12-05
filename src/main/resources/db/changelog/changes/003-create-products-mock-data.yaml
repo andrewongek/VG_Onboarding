@@ -1,0 +1,125 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-products-mock-data.yaml
+      author: andrew
+      changes:
+
+        # -------------------------------------------------------
+        # Base Set Booster Pack (1999)
+        # -------------------------------------------------------
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-BASE-1999-EN" }
+              - column: { name: name, value: "Base Set Booster Pack (1999)" }
+              - column: { name: language, value: "ENGLISH" }
+              - column: { name: stock, value: "100" }
+              - column: { name: price, value: "699" }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-BASE-1999-JP" }
+              - column: { name: name, value: "拡張パック 第1弾 (Base Set 1999)" }
+              - column: { name: language, value: "JAPANESE" }
+              - column: { name: stock, value: "80" }
+              - column: { name: price, value: "720" }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-BASE-1999-CN" }
+              - column: { name: name, value: "基础卡包 (1999)" }
+              - column: { name: language, value: "CHINESE" }
+              - column: { name: stock, value: "70" }
+              - column: { name: price, value: "650" }
+
+        # -------------------------------------------------------
+        # Jungle Booster Pack
+        # -------------------------------------------------------
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-JUNGLE-EN" }
+              - column: { name: name, value: "Jungle Booster Pack" }
+              - column: { name: language, value: "ENGLISH" }
+              - column: { name: stock, value: "95" }
+              - column: { name: price, value: "650" }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-JUNGLE-JP" }
+              - column: { name: name, value: "ジャングル ブースターパック" }
+              - column: { name: language, value: "JAPANESE" }
+              - column: { name: stock, value: "85" }
+              - column: { name: price, value: "670" }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-JUNGLE-CN" }
+              - column: { name: name, value: "丛林补充包" }
+              - column: { name: language, value: "CHINESE" }
+              - column: { name: stock, value: "70" }
+              - column: { name: price, value: "630" }
+
+        # -------------------------------------------------------
+        # Fossil Booster Pack
+        # -------------------------------------------------------
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-FOSSIL-EN" }
+              - column: { name: name, value: "Fossil Booster Pack" }
+              - column: { name: language, value: "ENGLISH" }
+              - column: { name: stock, value: "110" }
+              - column: { name: price, value: "620" }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-FOSSIL-JP" }
+              - column: { name: name, value: "化石の秘密 ブースターパック" }
+              - column: { name: language, value: "JAPANESE" }
+              - column: { name: stock, value: "90" }
+              - column: { name: price, value: "650" }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-FOSSIL-CN" }
+              - column: { name: name, value: "化石之谜补充包" }
+              - column: { name: language, value: "CHINESE" }
+              - column: { name: stock, value: "75" }
+              - column: { name: price, value: "600" }
+
+        # -------------------------------------------------------
+        # Team Rocket Booster Pack
+        # -------------------------------------------------------
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-ROCKET-EN" }
+              - column: { name: name, value: "Team Rocket Booster Pack" }
+              - column: { name: language, value: "ENGLISH" }
+              - column: { name: stock, value: "90" }
+              - column: { name: price, value: "720" }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-ROCKET-JP" }
+              - column: { name: name, value: "ロケット団 ブースターパック" }
+              - column: { name: language, value: "JAPANESE" }
+              - column: { name: stock, value: "75" }
+              - column: { name: price, value: "740" }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: code, value: "PKM-ROCKET-CN" }
+              - column: { name: name, value: "火箭队补充包" }
+              - column: { name: language, value: "CHINESE" }
+              - column: { name: stock, value: "65" }
+              - column: { name: price, value: "700" }

@@ -57,17 +57,17 @@ public class HomeController {
     @GetMapping({"/", "/home"})
     public String homePage(Model model, Authentication authentication) {
         model.addAttribute("username", authentication.getName());
-        model.addAttribute("products", productService.getProductList());
+        model.addAttribute("productlist", productService.getProductList().products());
         return "home";
     }
 
-    @PostMapping("/product/buy/{code}")
+    @PostMapping("/home/buy/{code}")
     public String buyProduct(@PathVariable String code) {
         productService.buy(code);
         return "redirect:/home";
     }
 
-//    @PostMapping("/product/add-to-cart/{code}")
+//    @PostMapping("/home/add-to-cart/{code}")
 //    public String addToCart(@PathVariable String code) {
 //        productService.addToCart(code);
 //        return "redirect:/home";
@@ -86,11 +86,13 @@ public class HomeController {
     @PostMapping("/register")
     @ResponseBody
     public String registerNewUser(@RequestParam String username,
-                                  @RequestParam String password) {
+                                  @RequestParam String password,
+                                  @RequestParam String email) {
 
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(passwordEncoder.encode(password));
+        newUser.setEmail(email);
         newUser.setRole("USER");
 
         userCrudRepository.save(newUser);

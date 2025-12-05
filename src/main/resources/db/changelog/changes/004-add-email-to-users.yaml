@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-add-email-to-users
+      author: andrew
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  type: varchar(255)
+
+        # Set default email for existing users
+        - update:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: "default@example.com"
+
+        # Now enforce NOT NULL once data exists
+        - addNotNullConstraint:
+            tableName: users
+            columnName: email
+            columnDataType: varchar(255)

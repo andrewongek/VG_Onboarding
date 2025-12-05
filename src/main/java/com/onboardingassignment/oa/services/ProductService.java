@@ -5,6 +5,7 @@ import com.onboardingassignment.oa.model.Product;
 import com.onboardingassignment.oa.repository.product.ProductCrudRepository;
 import com.onboardingassignment.oa.repository.product.ProductJpaRepository;
 import com.onboardingassignment.oa.repository.product.ProductPagingAndSortingRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class ProductService {
         return productPagingAndSortingRepository.findAll(pageable);
     }
 
-
+    @Transactional
     public void buy(String code) {
         Product product = productJpaRepository.findByCode(code);
         if (product == null) {
@@ -54,6 +55,7 @@ public class ProductService {
 
     public ProductList getProductList() {
         List<Product> products = productJpaRepository.findAll();
+        System.out.println(products);
         return new ProductList(products);
     }
 }
