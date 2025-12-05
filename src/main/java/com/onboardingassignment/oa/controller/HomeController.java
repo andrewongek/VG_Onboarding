@@ -1,14 +1,13 @@
 package com.onboardingassignment.oa.controller;
 
 import com.onboardingassignment.oa.model.User;
-import com.onboardingassignment.oa.repository.product.ProductCrudRepository;
-import com.onboardingassignment.oa.repository.user.UserCrudRepository;
 import com.onboardingassignment.oa.services.ProductService;
+import com.onboardingassignment.oa.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +17,11 @@ import java.io.IOException;
 @Controller
 public class HomeController {
 
-    private final UserCrudRepository userCrudRepository;
-    private final ProductCrudRepository productCrudRepository;
-    private final PasswordEncoder passwordEncoder;
-
+    private final UserService userService;
     private final ProductService productService;
 
-    public HomeController(
-            UserCrudRepository userCrudRepository,
-            ProductCrudRepository productCrudRepository,
-            PasswordEncoder passwordEncoder, ProductService productService) {
-        this.userCrudRepository = userCrudRepository;
-        this.productCrudRepository = productCrudRepository;
-        this.passwordEncoder = passwordEncoder;
+    public HomeController(UserService userService, ProductService productService) {
+        this.userService = userService;
         this.productService = productService;
     }
 
@@ -85,19 +76,19 @@ public class HomeController {
 
     @PostMapping("/register")
     @ResponseBody
-    public String registerNewUser(@RequestParam String username,
-                                  @RequestParam String password,
-                                  @RequestParam String email) {
+    public ResponseEntity<String> registerNewUser(@RequestParam String username,
+                                                  @RequestParam String password,
+                                                  @RequestParam String email) {
 
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(passwordEncoder.encode(password));
-        newUser.setEmail(email);
-        newUser.setRole("USER");
+        if (username == null || username.isBlank() ||
+                password == null || password.isBlank() ||
+                email == null || email.isBlank()) {
 
-        userCrudRepository.save(newUser);
+            return ResponseEntity.badRequest().body("All fields are required.");
+        }
 
-        return "Registered";
+        userService.registerUser(username, password, email, "USER");
+        return ResponseEntity.ok("Registered");
     }
 
     // --------------------------
@@ -107,7 +98,7 @@ public class HomeController {
     @GetMapping("/users")
     @ResponseBody
     public Iterable<User> getAllUsers() {
-        return userCrudRepository.findAll();
+        return userService.getAllUsers();
     }
 
     // --------------------------
