@@ -70,4 +70,9 @@ public class CartService {
             cartItemRepository.save(cartItem);
         }
     }
+
+    public void deleteCartItem(Long id) {
+        cartItemRepository.deleteById(id);
+    }
+
 }

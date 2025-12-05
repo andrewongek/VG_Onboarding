@@ -76,10 +76,16 @@ public class HomeController {
         int grandTotal = cartItems.stream()
                 .mapToInt(CartItem::getTotalPrice)
                 .sum();
-
+        model.addAttribute("isEmpty", cartItems.isEmpty());
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("grandTotal", grandTotal);
         return "cart";
+    }
+
+    @PostMapping("/cart/remove")
+    public String removeFromCart(@RequestParam Long id) {
+        cartService.deleteCartItem(id);
+        return "redirect:/my_cart";
     }
 
     @PostMapping("/buy")
