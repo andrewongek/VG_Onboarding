@@ -1,6 +1,5 @@
 package com.onboardingassignment.oa.services;
 
-import com.onboardingassignment.oa.dto.ProductList;
 import com.onboardingassignment.oa.model.Product;
 import com.onboardingassignment.oa.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -47,8 +46,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public ProductList getProductList() {
-        List<Product> products = productRepository.findAll();
-        return new ProductList(products);
+    public List<Product> getProductList() {
+        return productRepository.findAll();
     }
 }

@@ -1,9 +1,11 @@
 package com.onboardingassignment.oa.controller;
 
+import com.onboardingassignment.oa.dto.OrderDto;
 import com.onboardingassignment.oa.model.CartItem;
 import com.onboardingassignment.oa.model.User;
 import com.onboardingassignment.oa.security.CustomUserDetails;
 import com.onboardingassignment.oa.services.CartService;
+import com.onboardingassignment.oa.services.OrderService;
 import com.onboardingassignment.oa.services.ProductService;
 import com.onboardingassignment.oa.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,11 +28,13 @@ public class HomeController {
     private final UserService userService;
     private final ProductService productService;
     private final CartService cartService;
+    private final OrderService orderService;
 
-    public HomeController(UserService userService, ProductService productService, CartService cartService) {
+    public HomeController(UserService userService, ProductService productService, CartService cartService, OrderService orderService) {
         this.userService = userService;
         this.productService = productService;
         this.cartService = cartService;
+        this.orderService = orderService;
     }
 
     // --------------------------
@@ -56,7 +60,7 @@ public class HomeController {
     @GetMapping({"/", "/home"})
     public String homePage(Model model, Authentication authentication) {
         model.addAttribute("username", authentication.getName());
-        model.addAttribute("productlist", productService.getProductList().products());
+        model.addAttribute("productlist", productService.getProductList());
         return "home";
     }
 
@@ -86,6 +90,16 @@ public class HomeController {
     public String removeFromCart(@RequestParam Long id) {
         cartService.deleteCartItem(id);
         return "redirect:/my_cart";
+    }
+
+//    @PostMapping("/cart/checkout")
+//    public String checkoutCart(@RequestParam Long id) {
+//        cartService.
+//    }
+
+    @GetMapping("/my_orders")
+    public List<OrderDto> getOrders(@AuthenticationPrincipal CustomUserDetails user) {
+        return orderService.getOrdersList(user.getId());
     }
 
     @PostMapping("/buy")

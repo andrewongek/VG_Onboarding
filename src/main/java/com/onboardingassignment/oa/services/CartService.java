@@ -1,5 +1,6 @@
 package com.onboardingassignment.oa.services;
 
+import com.onboardingassignment.oa.dto.OrderDto;
 import com.onboardingassignment.oa.model.Cart;
 import com.onboardingassignment.oa.model.CartItem;
 import com.onboardingassignment.oa.repository.CartItemRepository;
@@ -27,7 +28,6 @@ public class CartService {
 
     public List<CartItem> getCartItemsList(int userId) {
         var cart = cartRepository.findByUserId(userId);
-        System.out.println(cart);
         if (cart == null) {
             return List.of(); // return empty list if no cart exists
         }
@@ -71,8 +71,26 @@ public class CartService {
         }
     }
 
+    @Transactional
     public void deleteCartItem(Long id) {
         cartItemRepository.deleteById(id);
     }
 
+    public OrderDto checkout(int userId) {
+        var cartItemList = getCartItemsList(userId);
+        if (cartItemList.isEmpty()) {
+            throw new IllegalArgumentException("Cart is Empty");
+        }
+        // For each item
+            //Check if product can be found
+            //Check if there is enough stock
+            //Crate the OrderItemDto
+        //Create the OrderDto
+
+        //Clear the Cart
+        //Send the Order Confirmation
+            // Email
+            // Kafka to Admins
+        return null;
+    }
 }
