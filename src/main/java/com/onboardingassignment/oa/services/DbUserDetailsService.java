@@ -23,7 +23,7 @@ public class DbUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        com.onboardingassignment.oa.entities.User user =
+        com.onboardingassignment.oa.model.User user =
                 userCrudRepository.findByUsername(username);
 
         if (user == null) {

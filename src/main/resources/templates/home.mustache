@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    {{#products.items}}
+    {{#productlist}}
         <tr>
             <td>{{code}}</td>
             <td>{{name}}</td>
@@ -24,11 +24,15 @@
             <td>{{stock}}</td>
             <td>{{price}}</td>
             <td>
-                {{#buttons}}
-                    <button data-action="{{action}}">{{label}}</button>
-                {{/buttons}}
+                <form action="/home/buy/{{code}}" method="post" style="display:inline;">
+                    <button type="submit">Buy</button>
+                </form>
+
+                <form action="javascript:void(0)" style="display:inline;">
+                    <button type="button">Add to Cart</button>
+                </form>
             </td>
         </tr>
-    {{/products.items}}
+    {{/productlist}}
     </tbody>
 </table>

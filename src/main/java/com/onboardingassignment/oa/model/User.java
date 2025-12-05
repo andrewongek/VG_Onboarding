@@ -1,4 +1,4 @@
-package com.onboardingassignment.oa.entities;
+package com.onboardingassignment.oa.model;
 
 import jakarta.persistence.*;
 

@@ -1,8 +1,9 @@
 package com.onboardingassignment.oa.controller;
 
-import com.onboardingassignment.oa.entities.User;
+import com.onboardingassignment.oa.model.User;
 import com.onboardingassignment.oa.repository.product.ProductCrudRepository;
 import com.onboardingassignment.oa.repository.user.UserCrudRepository;
+import com.onboardingassignment.oa.services.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -21,13 +22,16 @@ public class HomeController {
     private final ProductCrudRepository productCrudRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final ProductService productService;
+
     public HomeController(
             UserCrudRepository userCrudRepository,
             ProductCrudRepository productCrudRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder, ProductService productService) {
         this.userCrudRepository = userCrudRepository;
         this.productCrudRepository = productCrudRepository;
         this.passwordEncoder = passwordEncoder;
+        this.productService = productService;
     }
 
     // --------------------------
@@ -53,9 +57,21 @@ public class HomeController {
     @GetMapping({"/", "/home"})
     public String homePage(Model model, Authentication authentication) {
         model.addAttribute("username", authentication.getName());
-        model.addAttribute("products", productCrudRepository.findAll());
+        model.addAttribute("products", productService.getProductList());
         return "home";
     }
+
+    @PostMapping("/product/buy/{code}")
+    public String buyProduct(@PathVariable String code) {
+        productService.buy(code);
+        return "redirect:/home";
+    }
+
+//    @PostMapping("/product/add-to-cart/{code}")
+//    public String addToCart(@PathVariable String code) {
+//        productService.addToCart(code);
+//        return "redirect:/home";
+//    }
 
     @GetMapping("/admin")
     public String adminPage(Model model, Authentication authentication) {
