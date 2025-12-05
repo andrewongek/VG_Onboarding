@@ -1,6 +1,7 @@
 package com.onboardingassignment.oa.services;
 
-import com.onboardingassignment.oa.repository.user.UserCrudRepository;
+import com.onboardingassignment.oa.repository.UserRepository;
+import com.onboardingassignment.oa.security.CustomUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,11 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class DbUserDetailsService implements UserDetailsService {
 
-    private final UserCrudRepository userCrudRepository;
+    private final UserRepository userCrudRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public DbUserDetailsService(UserCrudRepository userCrudRepository,
+    public DbUserDetailsService(UserRepository userCrudRepository,
                                 PasswordEncoder passwordEncoder) {
         this.userCrudRepository = userCrudRepository;
         this.passwordEncoder = passwordEncoder;
@@ -30,11 +31,6 @@ public class DbUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
 
-        return org.springframework.security.core.userdetails.User
-                .builder()
-                .username(user.getUsername())
-                .password(user.getPassword()) // MUST be BCrypt encoded!
-                .roles(user.getRole())  // e.g. "ADMIN"
-                .build();
+        return new CustomUserDetails(user);
     }
 }

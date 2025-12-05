@@ -7,3 +7,7 @@ databaseChangeLog:
       file: db/changelog/changes/003-create-products-mock-data.yaml
   - include:
       file: db/changelog/changes/004-add-email-to-users.yaml
+  - include:
+      file: db/changelog/changes/005-create-carts-table.yaml
+  - include:
+      file: db/changelog/changes/006-create-cart-items-table.yaml
