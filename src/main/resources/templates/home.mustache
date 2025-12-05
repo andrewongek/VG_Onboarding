@@ -3,3 +3,32 @@
 <form action="/logout" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
+
+<table>
+    <thead>
+    <tr>
+        <td>Code</td>
+        <td>Name</td>
+        <td>Language</td>
+        <td>Stock</td>
+        <td>Price</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#products.items}}
+        <tr>
+            <td>{{code}}</td>
+            <td>{{name}}</td>
+            <td>{{language}}</td>
+            <td>{{stock}}</td>
+            <td>{{price}}</td>
+            <td>
+                {{#buttons}}
+                    <button data-action="{{action}}">{{label}}</button>
+                {{/buttons}}
+            </td>
+        </tr>
+    {{/products.items}}
+    </tbody>
+</table>

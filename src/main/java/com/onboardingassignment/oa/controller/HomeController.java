@@ -1,7 +1,8 @@
 package com.onboardingassignment.oa.controller;
 
 import com.onboardingassignment.oa.entities.User;
-import com.onboardingassignment.oa.repository.UserRepository;
+import com.onboardingassignment.oa.repository.product.ProductCrudRepository;
+import com.onboardingassignment.oa.repository.user.UserCrudRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -16,12 +17,16 @@ import java.io.IOException;
 @Controller
 public class HomeController {
 
-    private final UserRepository userRepository;
+    private final UserCrudRepository userCrudRepository;
+    private final ProductCrudRepository productCrudRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public HomeController(UserRepository userRepository,
-                          PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public HomeController(
+            UserCrudRepository userCrudRepository,
+            ProductCrudRepository productCrudRepository,
+            PasswordEncoder passwordEncoder) {
+        this.userCrudRepository = userCrudRepository;
+        this.productCrudRepository = productCrudRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -48,6 +53,7 @@ public class HomeController {
     @GetMapping({"/", "/home"})
     public String homePage(Model model, Authentication authentication) {
         model.addAttribute("username", authentication.getName());
+        model.addAttribute("products", productCrudRepository.findAll());
         return "home";
     }
 
@@ -71,7 +77,7 @@ public class HomeController {
         newUser.setPassword(passwordEncoder.encode(password));
         newUser.setRole("USER");
 
-        userRepository.save(newUser);
+        userCrudRepository.save(newUser);
 
         return "Registered";
     }
@@ -83,7 +89,7 @@ public class HomeController {
     @GetMapping("/users")
     @ResponseBody
     public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+        return userCrudRepository.findAll();
     }
 
     // --------------------------

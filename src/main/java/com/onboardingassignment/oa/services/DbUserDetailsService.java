@@ -1,6 +1,6 @@
 package com.onboardingassignment.oa.services;
 
-import com.onboardingassignment.oa.repository.UserRepository;
+import com.onboardingassignment.oa.repository.user.UserCrudRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class DbUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserCrudRepository userCrudRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public DbUserDetailsService(UserRepository userRepository,
+    public DbUserDetailsService(UserCrudRepository userCrudRepository,
                                 PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+        this.userCrudRepository = userCrudRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -24,7 +24,7 @@ public class DbUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         com.onboardingassignment.oa.entities.User user =
-                userRepository.findByUsername(username);
+                userCrudRepository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
