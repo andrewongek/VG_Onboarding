@@ -9,36 +9,35 @@
 
 <h1>Your Cart</h1>
 
-{{#cartItems.length}}
-    <table>
-        <thead>
-        <tr>
-            <th>Product</th>
-            <th>Code</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th>Action</th>
-        </tr>
-        </thead>
+<table>
+<thead>
+<tr>
+    <th>Product</th>
+    <th>Code</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Total</th>
+    <th>Action</th>
+</tr>
+</thead>
 
-        <tbody>
-        {{#cartItems}}
-            <tr>
-                <td>{{name}}</td>
-                <td>{{code}}</td>
-                <td>S${{price}}</td>
-                <td>{{quantity}}</td>
-                <td>S${{total}}</td>
-                <td>
-                    <form method="post" action="/cart/remove/{{code}}">
-                        <button type="submit">Remove</button>
-                    </form>
-                </td>
-            </tr>
-        {{/cartItems}}
-        </tbody>
-    </table>
+<tbody>
+{{#cartItems}}
+    <tr>
+        <td>{{product.name}}</td>
+        <td>{{product.code}}</td>
+        <td>S${{product.price}}</td>
+        <td>{{quantity}}</td>
+        <td>S${{totalPrice}}</td>
+        <td>
+            <form method="post" action="/cart/remove/{{product.code}}">
+                <button type="submit">Remove</button>
+            </form>
+        </td>
+    </tr>
+{{/cartItems}}
+</tbody>
+</table>
 
     <h3>Total Amount: S${{grandTotal}}</h3>
 
@@ -46,11 +45,10 @@
         <button type="submit">Checkout</button>
     </form>
 
-{{/cartItems.length}}
 
-{{^cartItems.length}}
+{{^cartItems}}
     <p>Your cart is empty.</p>
-{{/cartItems.length}}
+{{/cartItems}}
 
 <br>
 <a href="/home">Back to Home</a>

@@ -49,7 +49,6 @@ public class ProductService {
 
     public ProductList getProductList() {
         List<Product> products = productRepository.findAll();
-        System.out.println(products);
         return new ProductList(products);
     }
 }

@@ -1,9 +1,29 @@
+{{#success}}
+    <div id="toast" style="
+     position: fixed;
+     bottom: 20px;
+     right: 20px;
+     background: #4caf50;
+     color: white;
+     padding: 10px 20px;
+     border-radius: 4px;
+">
+        {{success}}
+    </div>
+
+    <script>
+        setTimeout(() => document.getElementById('toast').remove(), 3000);
+    </script>
+{{/success}}
+
 <h1>Hello {{username}}!</h1>
 
 <form action="/logout" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
-
+<form action="/my_cart" method="get">
+    <button type="submit">View My Cart</button>
+</form>
 <table>
     <thead>
     <tr>
@@ -24,12 +44,13 @@
             <td>{{stock}}</td>
             <td>{{price}}</td>
             <td>
-                <form action="/home/buy/{{code}}" method="post" style="display:inline;">
+                <form action="/buy" method="post">
+                    <input type="hidden" name="code" value="{{code}}">
                     <button type="submit">Buy</button>
                 </form>
-
-                <form action="javascript:void(0)" style="display:inline;">
-                    <button type="button">Add to Cart</button>
+                <form action="/add_to_cart" method="post">
+                    <input type="hidden" name="code" value="{{code}}">
+                    <button type="submit">Add to Cart</button>
                 </form>
             </td>
         </tr>

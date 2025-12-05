@@ -1,6 +1,9 @@
 package com.onboardingassignment.oa.controller;
 
+import com.onboardingassignment.oa.model.CartItem;
 import com.onboardingassignment.oa.model.User;
+import com.onboardingassignment.oa.security.CustomUserDetails;
+import com.onboardingassignment.oa.services.CartService;
 import com.onboardingassignment.oa.services.ProductService;
 import com.onboardingassignment.oa.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,21 +11,26 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class HomeController {
 
     private final UserService userService;
     private final ProductService productService;
+    private final CartService cartService;
 
-    public HomeController(UserService userService, ProductService productService) {
+    public HomeController(UserService userService, ProductService productService, CartService cartService) {
         this.userService = userService;
         this.productService = productService;
+        this.cartService = cartService;
     }
 
     // --------------------------
@@ -52,17 +60,34 @@ public class HomeController {
         return "home";
     }
 
-    @PostMapping("/home/buy/{code}")
-    public String buyProduct(@PathVariable String code) {
-        productService.buy(code);
+    @PostMapping("/add_to_cart")
+    public String addToCart(@AuthenticationPrincipal CustomUserDetails user,
+                            @RequestParam String code,
+                            RedirectAttributes redirectAttributes) {
+
+        cartService.addCartItem(user.getId(), code);
+        redirectAttributes.addFlashAttribute("success", "Item added to cart!");
         return "redirect:/home";
     }
 
-//    @PostMapping("/home/add-to-cart/{code}")
-//    public String addToCart(@PathVariable String code) {
-//        productService.addToCart(code);
-//        return "redirect:/home";
-//    }
+    @GetMapping("my_cart")
+    public String cartPage(Model model, @AuthenticationPrincipal CustomUserDetails user) {
+        List<CartItem> cartItems = cartService.getCartItemsList(user.getId());
+        int grandTotal = cartItems.stream()
+                .mapToInt(CartItem::getTotalPrice)
+                .sum();
+
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("grandTotal", grandTotal);
+        return "cart";
+    }
+
+    @PostMapping("/buy")
+    public String buyProduct(@AuthenticationPrincipal CustomUserDetails user,
+                             @RequestParam String code) {
+        cartService.addCartItem(user.getId(), code);
+        return "redirect:/my_cart";
+    }
 
     @GetMapping("/admin")
     public String adminPage(Model model, Authentication authentication) {

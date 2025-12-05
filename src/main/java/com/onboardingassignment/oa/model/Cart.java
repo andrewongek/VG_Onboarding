@@ -64,5 +64,4 @@ public class Cart {
                 .mapToInt(CartItem::getTotalPrice)
                 .sum();
     }
-
 }
