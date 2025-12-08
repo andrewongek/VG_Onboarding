@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.Lock;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Product findByCode(String code);
+
+    Product getById(int id);
 }

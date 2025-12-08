@@ -44,16 +44,27 @@
             <td>{{stock}}</td>
             <td>{{price}}</td>
             <td>
-                <form action="/buy" method="post">
+                <form action="/buy" method="post" data-stock="{{stock}}">
                     <input type="hidden" name="code" value="{{code}}">
-                    <button type="submit">Buy</button>
+                    <button type="submit" class="buy-btn">Buy</button>
                 </form>
-                <form action="/add_to_cart" method="post">
+                <form action="/add_to_cart" method="post" data-stock="{{stock}}">
                     <input type="hidden" name="code" value="{{code}}">
-                    <button type="submit">Add to Cart</button>
+                    <button type="submit" class="cart-btn">Add to Cart</button>
+                </form>
+                <form action="/product/{{id}}" method="get">
+                    <button type="submit">View</button>
                 </form>
             </td>
         </tr>
     {{/productlist}}
     </tbody>
 </table>
+<script>
+    document.querySelectorAll('form[data-stock]').forEach(form => {
+        const stock = parseInt(form.getAttribute('data-stock'));
+        if (stock === 0) {
+            form.querySelector('button').disabled = true;
+        }
+    });
+</script>

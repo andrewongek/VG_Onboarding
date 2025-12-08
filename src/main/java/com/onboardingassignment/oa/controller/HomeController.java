@@ -15,12 +15,18 @@ public class HomeController {
         this.productService = productService;
     }
 
-    @GetMapping({"/"})
+    @GetMapping("/")
     public String homePage(Model model, Authentication authentication) {
         model.addAttribute("username", authentication.getName());
         model.addAttribute("productlist", productService.getProductList());
         return "home";
     }
 
+    @GetMapping("/product/{id}")
+    public String viewProduct(@PathVariable int id, Model model) {
+        model.addAttribute("product", productService.getProductById(id));
+        model.addAttribute("favourited", true);
+        return "item-info";
+    }
 
 }

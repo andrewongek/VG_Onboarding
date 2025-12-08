@@ -18,6 +18,9 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    public Product getProductById(int id) {
+        return productRepository.getById(id);
+    }
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }

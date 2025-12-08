@@ -52,7 +52,7 @@ public class CartController {
         return "cart";
     }
 
-    @DeleteMapping("/cart-item")
+    @PostMapping("/cart-item")
     public String removeFromCart(@RequestParam Long id) {
         cartService.deleteCartItem(id);
         return "redirect:/my_cart";
