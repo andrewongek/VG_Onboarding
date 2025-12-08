@@ -5,6 +5,7 @@ import com.onboardingassignment.oa.model.Product;
 import com.onboardingassignment.oa.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +46,28 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    public Page<ProductDto> getPaginatedProductList(int page, int size, String sortBy, String direction, String keyword) {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
+
+        if (keyword != null && !keyword.isBlank()) {
+
+            Product probe = new Product();
+            // matchingAny → either name OR code matches
+            probe.setName(keyword);
+            probe.setCode(keyword);
+
+            ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                    .withIgnoreCase("name", "code")
+                    .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+            Example<Product> example  = Example.of(probe, matcher);
+            return productRepository.findAll(example, pageable).map(this::toDto);
+        } else {
+            return productRepository.findAll(pageable).map(this::toDto);
+        }
+    }
+
     public List<ProductDto> getProductList() {
         return productRepository.findAll()
                 .stream()
@@ -58,6 +81,13 @@ public class ProductService {
                 .map(this::toDto)
                 .toList();
 
+    }
+
+    public List<ProductDto> getProductListFromKeyword(String keyword) {
+        return productRepository.searchProductsByNameOrCode(keyword)
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
     private ProductDto toDto(Product product) {
