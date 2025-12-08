@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Favourites</title>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <td>Code</td>
+        <td>Name</td>
+        <td>Language</td>
+        <td>Stock</td>
+        <td>Price</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#productlist}}
+        <tr>
+            <td>{{code}}</td>
+            <td>{{name}}</td>
+            <td>{{language}}</td>
+            <td>{{stock}}</td>
+            <td>{{price}}</td>
+            <td>
+                <form action="/product/{{id}}" method="get">
+                    <button type="submit">View</button>
+                </form>
+            </td>
+        </tr>
+    {{/productlist}}
+    </tbody>
+</table>
+
+<br>
+<a href="/">Back to Home</a>
+
+</body>
+</html>

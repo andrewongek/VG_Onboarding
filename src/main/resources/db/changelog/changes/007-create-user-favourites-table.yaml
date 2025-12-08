@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-create-user-favourites-table
+      author: andrew
+      changes:
+        - createTable:
+            tableName: user_favourites
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: INT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        - addUniqueConstraint:
+            tableName: user_favourites
+            columnNames: user_id, product_id
+            constraintName: uq_user_favourites_user_product

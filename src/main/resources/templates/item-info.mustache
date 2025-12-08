@@ -11,7 +11,7 @@
     <h2>{{product.name}}</h2>
 
     <label class="toggle-switch">
-        <input type="checkbox" id="favoriteToggle" checked = {{favourited}}>
+        <input type="checkbox" id="favoriteToggle" {{#favourited}}checked{{/favourited}}>
         <span class="slider round">Favourite</span>
     </label>
 
@@ -36,12 +36,21 @@
 
 </div>
 <script>
+    const productId = {{product.id}};
     const favToggle = document.getElementById("favoriteToggle");
 
     favToggle.addEventListener("change", function () {
 
         const isChecked = favToggle.checked;
-
-        console.log("Toggled:", isChecked);
-    });
+        fetch(`/product/${productId}?favourite=${isChecked ? 1 : 0}`, {
+        method: "POST"
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to toggle favourite");
+        }
+        console.log("Favourite updated");
+    })
+    .catch(err => console.error(err));
+        });
 </script>
