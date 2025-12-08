@@ -22,9 +22,9 @@ public class OrderController {
 
     @GetMapping("/api/order")
     public ResponseEntity<List<OrderDto>> getOrders(@AuthenticationPrincipal CustomUserDetails user) {
-        if (user == null) {
-            return ResponseEntity.status(401).build();
-        }
+//        if (user == null) {
+//            return ResponseEntity.status(401).build();
+//        }
         return ResponseEntity.ok(orderService.getOrdersList(user.getId()));
     }
 }

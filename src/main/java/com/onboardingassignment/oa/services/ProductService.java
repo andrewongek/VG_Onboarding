@@ -1,11 +1,10 @@
 package com.onboardingassignment.oa.services;
 
+import com.onboardingassignment.oa.dto.ProductDto;
 import com.onboardingassignment.oa.model.Product;
 import com.onboardingassignment.oa.repository.ProductRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +17,9 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product getProductById(int id) {
-        return productRepository.getById(id);
+    @Cacheable(value="PRODUCT_CACHE", key = "#id")
+    public ProductDto getProductById(int id) {
+        return toDto(productRepository.getById(id));
     }
 
     public Product saveProduct(Product product) {
@@ -28,11 +28,6 @@ public class ProductService {
 
     public List<Product> findAllProducts() {
         return productRepository.findAll();
-    }
-
-    public Iterable<Product> findAllProductsPagedAndSorted(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("price").ascending());
-        return productRepository.findAll(pageable);
     }
 
     @Transactional
@@ -50,11 +45,29 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public List<Product> getProductList() {
-        return productRepository.findAll();
+    public List<ProductDto> getProductList() {
+        return productRepository.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
-    public List<Product> getProductListFromIds(List<Integer> ids) {
-        return productRepository.findAllById(ids);
+    public List<ProductDto> getProductListFromIds(List<Integer> ids) {
+        return productRepository.findAllById(ids)
+                .stream()
+                .map(this::toDto)
+                .toList();
+
+    }
+
+    private ProductDto toDto(Product product) {
+        return new ProductDto(
+                product.getId(),
+                product.getCode(),
+                product.getName(),
+                product.getLanguage(),
+                product.getStock(),
+                product.getPrice()
+        );
     }
 }
