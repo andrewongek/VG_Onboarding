@@ -16,7 +16,7 @@ public class UserFavourites {
     private int userId;
 
     @Column(name = "product_id")
-    private long productId;
+    private int productId;
 
     public Long getId() {
         return id;
@@ -34,11 +34,11 @@ public class UserFavourites {
         this.userId = userId;
     }
 
-    public long getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 }

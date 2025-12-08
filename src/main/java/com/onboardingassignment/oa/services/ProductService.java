@@ -21,6 +21,7 @@ public class ProductService {
     public Product getProductById(int id) {
         return productRepository.getById(id);
     }
+
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
@@ -51,5 +52,9 @@ public class ProductService {
 
     public List<Product> getProductList() {
         return productRepository.findAll();
+    }
+
+    public List<Product> getProductListFromIds(List<Integer> ids) {
+        return productRepository.findAllById(ids);
     }
 }

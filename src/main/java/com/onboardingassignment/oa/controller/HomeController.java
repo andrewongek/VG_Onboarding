@@ -29,17 +29,28 @@ public class HomeController {
     }
 
     @GetMapping("/product/{id}")
-    public String viewProduct(@PathVariable int id, Model model) {
+    public String viewProduct(@PathVariable int id, @AuthenticationPrincipal CustomUserDetails user, Model model) {
+        var isFavourited = userFavouritesService.isFavourited(user.getId(), id);
+        System.out.println(isFavourited);
         model.addAttribute("product", productService.getProductById(id));
-        model.addAttribute("favourited", true);
+        model.addAttribute("favourited", isFavourited);
         return "item-info";
     }
 
     @PostMapping("/product/{id}")
-    public ResponseEntity<Void> toggleFavourite(@RequestParam int favourite, @AuthenticationPrincipal CustomUserDetails user) {
+    public ResponseEntity<Void> toggleFavourite(@PathVariable int id, @RequestParam int favourite, @AuthenticationPrincipal CustomUserDetails user) {
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
-//        return ResponseEntity.ok(userFavouritesService.toggleFavourites(user.getId(), );)
+        userFavouritesService.toggleFavourites(user.getId(), id, favourite);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/my_favourites")
+    public String viewFavourites(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+        var userFavouritesProductIds = userFavouritesService.getProductIdsByUserId(user.getId());
+
+        model.addAttribute("productlist", productService.getProductListFromIds(userFavouritesProductIds));
+        return "favourites";
     }
 }

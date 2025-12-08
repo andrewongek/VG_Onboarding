@@ -2,9 +2,11 @@ package com.onboardingassignment.oa.services;
 
 import com.onboardingassignment.oa.model.UserFavourites;
 import com.onboardingassignment.oa.repository.UserFavouritesRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserFavouritesService {
     private final UserFavouritesRepository userFavouritesRepository;
 
@@ -12,15 +14,19 @@ public class UserFavouritesService {
         this.userFavouritesRepository = userFavouritesRepository;
     }
 
-    public void toggleFavourites(int userId, long productId, int toggle) {
-        if (toggle == 1){
+    public boolean isFavourited(int userId, long productId) {
+        return userFavouritesRepository.findByUserIdAndProductId(userId, productId).isPresent();
+    }
+
+    public void toggleFavourites(int userId, int productId, int toggle) {
+        if (toggle == 1) {
             addFavourite(userId, productId);
-        }else if (toggle == 0){
+        } else if (toggle == 0) {
             deleteUserFavourite(userId, productId);
         }
     }
 
-    public void addFavourite(int userId, long productId) {
+    public void addFavourite(int userId, int productId) {
         if (userFavouritesRepository.findByUserIdAndProductId(userId, productId).isPresent()) {
             return; // already exists
         }
@@ -37,7 +43,7 @@ public class UserFavouritesService {
         existing.ifPresent(userFavouritesRepository::delete);
     }
 
-    public List<Long> getProductIdsByUserId(int userId) {
+    public List<Integer> getProductIdsByUserId(int userId) {
         var userFavourites = userFavouritesRepository.findByUserId(userId);
         return userFavourites.stream().map(UserFavourites::getProductId).toList();
     }
