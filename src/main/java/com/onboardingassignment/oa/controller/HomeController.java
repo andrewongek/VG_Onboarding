@@ -22,9 +22,14 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model, Authentication authentication) {
+    public String homePage(Model model,
+                           Authentication authentication,
+                           @RequestParam(defaultValue = "0") int page,
+                           @RequestParam(defaultValue = "10") int size,
+                           @RequestParam(defaultValue = "id") String sortBy,
+                           @RequestParam(defaultValue = "asc") String direction) {
         model.addAttribute("username", authentication.getName());
-        model.addAttribute("productlist", productService.getProductList());
+        model.addAttribute("productlist", productService.getPaginatedProductList(page, size, sortBy, direction, null));
         return "home";
     }
 
@@ -53,4 +58,18 @@ public class HomeController {
         model.addAttribute("productlist", productService.getProductListFromIds(userFavouritesProductIds));
         return "favourites";
     }
+
+    @GetMapping("/search")
+    public String searchProducts(Model model,
+                                 Authentication authentication,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 @RequestParam(defaultValue = "id") String sortBy,
+                                 @RequestParam(defaultValue = "asc") String direction,
+                                 @RequestParam String keyword) {
+        model.addAttribute("username", authentication.getName());
+        model.addAttribute("productlist", productService.getPaginatedProductList(page, size, sortBy, direction, keyword));
+        return "home";
+    }
+
 }

@@ -27,12 +27,24 @@
 <form action="/my_favourites" method="get">
     <button type="submit">View My Favourites</button>
 </form>
+<form action="/search" method="get" style="margin-bottom: 20px;">
+    <input
+            type="text"
+            name="keyword"
+            placeholder="Search products..."
+            required
+    >
+    <button type="submit">Search</button>
+</form>
+<form action="/" method="get">
+    <button type="submit">Reset</button>
+</form>
 <table>
     <thead>
     <tr>
         <td>Code</td>
         <td>Name</td>
-        <td>Language< /td>
+        <td>Language</td>
         <td>Stock</td>
         <td>Price</td>
         <td>Actions</td>
